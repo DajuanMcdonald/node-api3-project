@@ -38,6 +38,16 @@ router.put('/:id', (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
+  Users.getById(req.params.id)
+  .then(user => {
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(400).json({message: "invalid user id"})
+    }
+  })
+  .catch(err => res.status(500).json({message: "Server error"}));
 }
 
 function validateUser(req, res, next) {
