@@ -30,8 +30,20 @@ router.delete('/:id', (req, res) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // do your magic!
+  Users.update(req.params.id, req.body)
+  .then(user => {
+    if (req.user.name !== req.body.name) {
+      res.status(200).json({
+        status: `Users 'name ${req.user.name ? req.user.name : req.body.name} was updated to ${req.body.name}`,
+        oldName: req.user.name,
+        newName: req.body.name
+      })
+      .catch(err => res.status(500).json({errorMessage: `Error updating, ${user}` }))
+    }
+  })
+
 });
 
 //custom middleware
