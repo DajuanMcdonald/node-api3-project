@@ -31,10 +31,15 @@ router.get('/:id', validateUser, (req, res) => {
 
 router.get('/:id/posts', (req, res) => {
   // do your magic!
+  Users.getUserPosts(req.params.id)
+  .then(posts => res.status(200).json(posts))
+  .catch(err => res.status(500).json({errorMessage: `Error getting ${posts}`}))
+
 });
 
 router.delete('/:id', (req, res) => {
   // do your magic!
+  
 });
 
 router.put('/:id', validateUserId, validateUser, (req, res) => {
