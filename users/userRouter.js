@@ -37,9 +37,12 @@ router.get('/:id/posts', (req, res) => {
 
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
-  
+  Users.remove(req.params.id)
+  .then(user => res.status(200).json(user))
+  .catch(err => res.status(500).json({message: `Unable to delete ${user}`}))
+
 });
 
 router.put('/:id', validateUserId, validateUser, (req, res) => {
