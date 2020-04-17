@@ -14,15 +14,19 @@ router.post('/', validateUser, (req, res) => {
 router.post('/:id/posts', validateUser, (req, res) => {
   Users.insert(req.body)
   .then(user => { res.status(200).json(user)})
-  .catch(err => res.status(500).json({message: }))
+  .catch(err => res.status(500).json({errormessage: "error creating post."}))
 });
 
 router.get('/', (req, res) => {
   // do your magic!
+  Users.get()
+  .then(users => res.status(200).json(users))
+  .catch(err => res.status(500).json({message: "The array of users was not found."}))
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUser, (req, res) => {
   // do your magic!
+  req.user ? res.status(200).json(req.user) : res.status(500).json({message: `Error getting ${user}`})
 });
 
 router.get('/:id/posts', (req, res) => {
