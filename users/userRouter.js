@@ -4,8 +4,11 @@ const Posts = require('../posts/postDb');
 const { restart } = require('nodemon');
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // do your magic!
+  Users.insert(req.body)
+  .then(user => res.status(200).json(user))
+  .catch(err => res.status(500).json({message: `Unable to add ${user} to database`}))
 });
 
 router.post('/:id/posts', validateUser, (req, res) => {
