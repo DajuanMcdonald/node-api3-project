@@ -1,6 +1,7 @@
 const express = require('express');
 const Users = require('./userDb');
 const Posts = require('../posts/postDb');
+const { restart } = require('nodemon');
 const router = express.Router();
 
 router.post('/', (req, res) => {
@@ -54,7 +55,16 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
-  
+  if (req.body) {
+    if (req.body.text) {
+      next();
+    } else {
+      res.status(400).json({message: "missing required text field."})
+    }
+  } else {
+    res.status(400).json({message: "missing post data"})
+  }
+
 }
 
 module.exports = router;
